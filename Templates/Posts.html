@@ -1,0 +1,15 @@
+{%extends 'Base.html'%}
+
+{%block title%}Posts{%endblock%}
+{%block body%}
+    {%for i in posts%}
+        <br><h1> Welcome {{i['customer_id']}} {{i['customer_name']}}</h1></br>
+        <br> {% if i.get('deposit_type') %} 
+               Deposit Type is {{i['deposit_type']}} 
+             {%else%}
+                No Deposit
+             {%endif%}
+      </br>
+
+    {%endfor%}
+{%endblock%}
