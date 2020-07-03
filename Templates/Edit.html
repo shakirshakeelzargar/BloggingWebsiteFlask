@@ -1,0 +1,15 @@
+{%extends 'Base.html'%}
+
+{%block title%}Edit{%endblock%}
+{%block body%}
+<hr>
+<form action='\Posts\Edit\{{post.id}}' method='POST'>
+  Title   : <input type="text" name="title" id="title" value = "{{post.title}}"</input>
+  Content :<input type="text" name="content" id="content" value = "{{post.content}}" ></input>
+  Author  : <input type="text" name="author" id="author" value = "{{post.author}}"></input>
+  <input type='Submit' id='submit' name ='Save'>
+  <br><br><hr><br><br>
+
+</form>
+</hr>
+{%endblock%}

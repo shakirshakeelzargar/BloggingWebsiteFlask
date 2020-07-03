@@ -43,8 +43,28 @@ def func_post():
         db.session.commit()
         return redirect('/Posts')
     else:
-        all_posts = BlogPost.query.all()
+        all_posts = BlogPost.query.order_by(BlogPost.date_post).all()
         return render_template('Posts.html',posts=all_posts)
+
+@application.route('/Posts/Delete/<int:id>')
+def delete(id):
+    post = BlogPost.query.get(id)
+    db.session.delete(post)
+    db.session.commit()
+    return redirect('/Posts')
+
+@application.route('/Posts/Edit/<int:id>',methods=['GET','POST'])
+def edit(id):
+    post = BlogPost.query.get(id)
+    if request.method =='POST':
+        post.title=request.form['title']
+        post.content=request.form['content']
+        post.author=request.form['author']
+        db.session.commit()
+        return redirect('/Posts')
+    else:
+        return render_template('Edit.html',post=post)
+
 
 if __name__ == "__main__":
     application.run(debug=True)
