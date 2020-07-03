@@ -23,9 +23,10 @@ class BlogPost(db.Model):
 
 
 # all_posts=[{'Sal':'Mr','Name':'Ashir','Prof':'Director'},{'Sal':'Miss','Name':'Ruby'}]
+@application.route('/home')
 @application.route('/')
 def index():
-    return "Test" #asdasd
+    return render_template("home.html") #asdasd
 
 @application.route('/Var/<string:name>')
 def Func1(name):
