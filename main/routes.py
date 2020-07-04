@@ -1,4 +1,4 @@
-from app import app as application
+from main import application
 from flask import render_template,redirect,url_for
 from flask import Flask,render_template,redirect,request
 from flask_sqlalchemy import SQLAlchemy

@@ -1,3 +1,3 @@
-from app import app
-app.run(debug=True)
+from main import application
+application.run(debug=True)
 #
