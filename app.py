@@ -3,12 +3,22 @@ from flask_sqlalchemy import SQLAlchemy
 import requests
 import json
 from datetime import datetime
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
+DB_USERNAME=os.environ.get("DB_USERNAME")
+DB_PASSWORD=os.environ.get("DB_PASSWORD")
+DB_DATABASE=os.environ.get("DB_DATABASE")
+DB_HOST=os.environ.get("DB_HOST")
 
 # response = json.loads(requests.get("https://raw.githubusercontent.com/shakirshakeelzargar/practice-python/master/assets/fd-reminder.json").text)
 
 application = Flask(__name__)
 
-application.config['SQLALCHEMY_DATABASE_URI']='sqlite:///posts.db'
+# application.config['SQLALCHEMY_DATABASE_URI']='sqlite:///posts.db'
+application.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(DB_USERNAME, DB_PASSWORD,DB_HOST,DB_DATABASE)
+
 db=SQLAlchemy(application)
 
 class BlogPost(db.Model):
@@ -46,6 +56,34 @@ def func_post():
     else:
         all_posts = BlogPost.query.order_by(BlogPost.date_post).all()
         return render_template('Posts.html',posts=all_posts)
+
+
+
+@application.route('/Posts/api',methods=['GET','POST'])
+def func_post_api():
+    if request.method=='POST':
+        new_post = BlogPost(title=request.form['title'],content=request.form['content'],author=request.form['author'])
+        db.session.add(new_post)
+        db.session.commit()
+        return redirect('/Posts')
+    else:
+        all_posts = BlogPost.query.order_by(BlogPost.date_post).all()
+        # return all_posts[0].title
+       
+        output_posts={}
+        output_posts["Company"]="Blueturrets"
+        output_posts["posts"]=[]
+        for i in range(0,len(all_posts)):
+            t={}
+            t['title']=all_posts[i].title
+            t['author']=all_posts[i].author
+            t['content']=all_posts[i].content
+            output_posts["posts"].append(t)
+        return output_posts
+
+
+
+
 
 @application.route('/Posts/Delete/<int:id>')
 def delete(id):
